@@ -1,31 +1,34 @@
 const express = require('express');
+const logger = require('morgan');
 const fs = require('fs/promises');
 const cors = require('cors');
+require('dotenv').config();
+const reservRouter = require('./routes/api/reserv');
 
 const app = express();
 
-const logger = async (req, res, next) => {
+const writeLog = async (req, res, next) => {
     await fs.appendFile(
         './log.txt',
         `${req.method} - ${req.url} - ${new Date()}\n`
     );
     next();
 };
+const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
+
+app.use(logger(formatsLogger));
 app.use(cors());
-app.use(logger);
+app.use(writeLog);
 app.use(express.json());
 
-app.get('/test', (req, res) => {
-    res.status(200).json({ message: 'Success' });
+app.use('/api/reservs', reservRouter);
+
+app.use((req, res) => {
+    res.status(404).json({ message: 'Not found' });
 });
 
 app.use((err, req, res, next) => {
-    console.log('');
-    res.status(err.status || 500).json({
-        error: err.message || 'Server error',
-    });
+    res.status(err.status || 500).json({ message: err.message });
 });
 
-app.listen(5500, () => {
-    console.log('Server started');
-});
+module.exports = app;
