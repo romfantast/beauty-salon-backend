@@ -4,6 +4,7 @@ const fs = require('fs/promises');
 const cors = require('cors');
 require('dotenv').config();
 const reservRouter = require('./routes/api/reserv');
+const authRouter = require('./routes/api/auth');
 
 const app = express();
 
@@ -21,7 +22,8 @@ app.use(cors());
 app.use(writeLog);
 app.use(express.json());
 
-app.use('/api/reservs', reservRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/reserv', reservRouter);
 
 app.use((req, res) => {
     res.status(404).json({ message: 'Not found' });
