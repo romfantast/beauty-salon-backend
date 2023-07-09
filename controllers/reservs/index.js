@@ -1,7 +1,7 @@
-const { getAll } = require('./reservs');
+const { getAllReservs } = require('./getAllReservs');
 const { addReserv } = require('./addReserv');
 
 module.exports = {
-    getAll,
+    getAllReservs,
     addReserv,
 };
