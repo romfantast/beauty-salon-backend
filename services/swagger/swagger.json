@@ -7,7 +7,7 @@
     },
     "servers": [
         {
-            "url": "https://beauty-salon-backend-0ks8.onrender.com"
+            "url": "https://beauty-salon-backend-0ks8.onrender.com/api"
         }
     ],
     "tags": [
