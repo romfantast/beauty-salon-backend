@@ -6,6 +6,8 @@ require('dotenv').config();
 const reservRouter = require('./routes/api/reserv');
 const authRouter = require('./routes/api/auth');
 
+const { swaggerUi, swaggerDocument } = require('./services/swagger/swagger');
+
 const app = express();
 
 const writeLog = async (req, res, next) => {
@@ -21,6 +23,7 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(writeLog);
 app.use(express.json());
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use('/api/auth', authRouter);
 app.use('/api/reserv', reservRouter);

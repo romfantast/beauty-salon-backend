@@ -1,0 +1,214 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Beauty Salon | Online booking",
+        "description": "Its API for web application Beauty Salon | Online booking",
+        "version": "2.2.2"
+    },
+    "servers": [
+        {
+            "url": "https://beauty-salon-backend-0ks8.onrender.com"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Authorization endpoints"
+        }
+    ],
+    "paths": {
+        "/auth/register": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "Create new user.",
+                "requestBody": {
+                    "content": {
+                        "aplication/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/NewUserRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NewUserResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BadRequest"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BadRequest"
+                                },
+                                "example": {
+                                    "message": "Email in use"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "LogIn user",
+                "requestBody": {
+                    "content": {
+                        "aplication/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginUserRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NewUserResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "User not found or all need to send all fields ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BadRequest"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "BadRequest": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "User not found"
+                    }
+                },
+                "description": "Bad Request"
+            },
+            "InternalServerError": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "Internal Server Error..."
+                    }
+                },
+                "description": "Internal Server Error"
+            },
+            "ServiceUnavailable": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "Service Unavailable..."
+                    }
+                },
+                "description": "Service Unavailable"
+            },
+            "NewUserRequest": {
+                "required": ["email", "name", "password"],
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "User's name only words without numbers and symbols",
+                        "example": "Entony"
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "User's email",
+                        "format": "email",
+                        "example": "entonymail@gmail.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": "User's password length: min 6 max:infinity",
+                        "format": "password",
+                        "example": "qwerty12345"
+                    }
+                },
+                "description": "New user registration requeest body"
+            },
+            "LoginUserRequest": {
+                "required": ["email", "password"],
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "description": "User's email",
+                        "format": "email",
+                        "example": "entonymail@gmail.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": "User's password length: min 7 max:32",
+                        "format": "password",
+                        "example": "qwerty12345"
+                    }
+                },
+                "description": "User logIn requeest body"
+            },
+            "NewUserResponse": {
+                "type": "object",
+                "properties": {
+                    "token": {
+                        "type": "string",
+                        "description": "User's token after login",
+                        "format": "jwt",
+                        "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MWIwYjM5ZmZkNDAzOWMyNjljNGI1OSIsImlhdCI6MTY3OTQ5NDczOCwiZXhwIjoxNjc5NTgxMTM4fQ.Wv0c7Snp7BU8vlziJ6sV0CzUHOs1bPUqnTK8LZJSqjI"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "User's name only words without numbers and symbols",
+                        "example": "Entony"
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "User's email with pattern '/^[a-z0-9]+@[a-z]+\n\\.[a-z]{2,3}/'",
+                        "example": "entonymail@gmail.com"
+                    },
+                    "spend": {
+                        "type": "number",
+                        "description": "User's initial spend money or updated",
+                        "format": ""
+                    }
+                },
+                "description": "User requeest body"
+            }
+        }
+    }
+}
