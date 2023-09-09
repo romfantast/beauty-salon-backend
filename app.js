@@ -5,6 +5,7 @@ const cors = require('cors');
 require('dotenv').config();
 const reservRouter = require('./routes/api/reserv');
 const authRouter = require('./routes/api/auth');
+const profileRouter = require('./routes/api/profile');
 
 const { swaggerUi, swaggerDocument } = require('./services/swagger/swagger');
 
@@ -27,6 +28,7 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use('/api/auth', authRouter);
 app.use('/api/reserv', reservRouter);
+app.use('/api/profile', profileRouter);
 
 app.use((req, res) => {
     res.status(404).json({ message: 'Not found' });
@@ -35,5 +37,4 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
     res.status(err.status || 500).json({ message: err.message });
 });
-
 module.exports = app;
