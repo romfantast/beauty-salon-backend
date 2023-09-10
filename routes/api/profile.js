@@ -4,6 +4,8 @@ const { authenticate } = require('../../middlewares');
 const ctrl = require('../../controllers/profile');
 const uploadCloud = require('../../middlewares/upload');
 
+router.get('/current', authenticate, ctrl.getProfile);
+
 router.patch(
     '/avatar',
     authenticate,
