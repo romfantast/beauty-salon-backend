@@ -10,11 +10,11 @@ const login = async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) {
-        throw HttpError(401, 'email is invalid');
+        throw HttpError(400, { error: 'email is invalid' });
     }
     const passwordCompare = await bycrypt.compare(password, user.password);
     if (!passwordCompare) {
-        throw HttpError(401, 'password is invalid');
+        throw HttpError(400, { error: 'password is invalid' });
     }
 
     const payload = {
